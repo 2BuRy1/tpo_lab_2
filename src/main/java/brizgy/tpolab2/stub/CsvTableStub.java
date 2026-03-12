@@ -1,6 +1,6 @@
-package bilyardvmetro.tpolab2.stub;
+package brizgy.tpolab2.stub;
 
-import bilyardvmetro.tpolab2.func.MathFunction;
+import brizgy.tpolab2.func.MathFunction;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package integration;
 
-import bilyardvmetro.tpolab2.func.MathFunction;
-import bilyardvmetro.tpolab2.system.FuncSystem;
+import brizgy.tpolab2.func.MathFunction;
+import brizgy.tpolab2.system.FuncSystem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;

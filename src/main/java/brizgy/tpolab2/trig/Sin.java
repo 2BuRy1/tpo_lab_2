@@ -1,7 +1,7 @@
-package bilyardvmetro.tpolab2.trig;
+package brizgy.tpolab2.trig;
 
-import bilyardvmetro.tpolab2.func.MathFunction;
-import bilyardvmetro.tpolab2.util.MathConfig;
+import brizgy.tpolab2.func.MathFunction;
+import brizgy.tpolab2.util.MathConfig;
 
 import java.math.BigDecimal;
 
@@ -15,8 +15,6 @@ public class Sin implements MathFunction {
         while (term.abs().compareTo(eps) > 0) {
             result = result.add(term, MathConfig.MC);
 
-            // итеративная формула
-            // t_n+1 = t_n * (- (x*2 / 2n*(2n + 1)))
             var numerator = term.multiply(x.pow(2), MathConfig.MC).negate();
             var denominator = new BigDecimal((2 * n) * (2 * n + 1));
 

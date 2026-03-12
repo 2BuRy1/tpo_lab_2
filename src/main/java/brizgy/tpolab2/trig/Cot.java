@@ -1,10 +1,9 @@
-package bilyardvmetro.tpolab2.trig;
+package brizgy.tpolab2.trig;
 
-import bilyardvmetro.tpolab2.func.MathFunction;
-import bilyardvmetro.tpolab2.util.MathConfig;
+import brizgy.tpolab2.func.MathFunction;
+import brizgy.tpolab2.util.MathConfig;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import static java.lang.String.format;
 

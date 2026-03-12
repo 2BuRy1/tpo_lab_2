@@ -1,8 +1,8 @@
 package unit.log;
 
-import bilyardvmetro.tpolab2.log.Ln;
-import bilyardvmetro.tpolab2.log.Log;
-import bilyardvmetro.tpolab2.func.MathFunction;
+import brizgy.tpolab2.log.Ln;
+import brizgy.tpolab2.log.Log;
+import brizgy.tpolab2.func.MathFunction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

@@ -1,9 +1,12 @@
-package bilyardvmetro.tpolab2.util;
+package brizgy.tpolab2.util;
 
-import bilyardvmetro.tpolab2.func.MathFunction;
+import brizgy.tpolab2.func.MathFunction;
 import bilyardvmetro.tpolab2.log.*;
-import bilyardvmetro.tpolab2.system.FuncSystem;
+import brizgy.tpolab2.log.Ln;
+import brizgy.tpolab2.log.Log;
+import brizgy.tpolab2.system.FuncSystem;
 import bilyardvmetro.tpolab2.trig.*;
+import brizgy.tpolab2.trig.*;
 
 import java.io.BufferedWriter;
 import java.math.BigDecimal;

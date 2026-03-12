@@ -1,6 +1,8 @@
-package bilyardvmetro.tpolab2.util;
+package brizgy.tpolab2;
 
-import bilyardvmetro.tpolab2.func.MathFunction;
+import brizgy.tpolab2.func.MathFunction;
+import brizgy.tpolab2.util.CsvExporter;
+import brizgy.tpolab2.util.ModuleFactory;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;
@@ -8,7 +10,7 @@ import java.nio.file.Path;
 public class Export {
     public static void main(String[] args) throws Exception {
 
-        String module = "sin"; // меняешь на sin/cos/ln/log2/...
+        String module = "sin";
         MathFunction fn = ModuleFactory.build(module, new BigDecimal("1E-20"));
 
         CsvExporter.export(

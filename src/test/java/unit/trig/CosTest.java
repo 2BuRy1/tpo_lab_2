@@ -1,8 +1,8 @@
 package unit.trig;
 
-import bilyardvmetro.tpolab2.trig.Cos;
-import bilyardvmetro.tpolab2.trig.Sin;
-import bilyardvmetro.tpolab2.func.MathFunction;
+import brizgy.tpolab2.trig.Cos;
+import brizgy.tpolab2.trig.Sin;
+import brizgy.tpolab2.func.MathFunction;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 

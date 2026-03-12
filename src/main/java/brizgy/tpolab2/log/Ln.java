@@ -1,7 +1,7 @@
-package bilyardvmetro.tpolab2.log;
+package brizgy.tpolab2.log;
 
-import bilyardvmetro.tpolab2.func.MathFunction;
-import bilyardvmetro.tpolab2.util.MathConfig;
+import brizgy.tpolab2.func.MathFunction;
+import brizgy.tpolab2.util.MathConfig;
 
 import java.math.BigDecimal;
 

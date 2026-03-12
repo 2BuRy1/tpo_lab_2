@@ -1,4 +1,4 @@
-package bilyardvmetro.tpolab2.func;
+package brizgy.tpolab2.func;
 
 import java.math.BigDecimal;
 

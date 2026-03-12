@@ -1,19 +1,17 @@
-package bilyardvmetro.tpolab2.trig;
+package brizgy.tpolab2.trig;
 
-import bilyardvmetro.tpolab2.func.MathFunction;
-import bilyardvmetro.tpolab2.util.MathConfig;
+import brizgy.tpolab2.func.MathFunction;
+import brizgy.tpolab2.util.MathConfig;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import static java.lang.String.format;
 
-public class Tan implements MathFunction{
-    private final MathFunction sin;
+public class Sec implements MathFunction {
+
     private final MathFunction cos;
 
-    public Tan(MathFunction sin, MathFunction cos) {
-        this.sin = sin;
+    public Sec(MathFunction cos) {
         this.cos = cos;
     }
 
@@ -25,6 +23,6 @@ public class Tan implements MathFunction{
             throw new ArithmeticException(format("У тангенса нет значения при x = %s", x));
         }
 
-        return sin.calc(x, eps).divide(c, MathConfig.MC);
+        return BigDecimal.ONE.divide(c, MathConfig.MC);
     }
 }

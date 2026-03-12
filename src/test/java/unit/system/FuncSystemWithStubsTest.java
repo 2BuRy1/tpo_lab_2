@@ -1,10 +1,14 @@
 package unit.system;
 
-import bilyardvmetro.tpolab2.func.MathFunction;
-import bilyardvmetro.tpolab2.stub.CsvTableStub;
-import bilyardvmetro.tpolab2.system.FuncSystem;
-import bilyardvmetro.tpolab2.trig.*;
-import bilyardvmetro.tpolab2.log.*;
+import brizgy.tpolab2.func.MathFunction;
+import brizgy.tpolab2.log.Ln;
+import brizgy.tpolab2.log.Log;
+import brizgy.tpolab2.stub.CsvTableStub;
+import brizgy.tpolab2.system.FuncSystem;
+import brizgy.tpolab2.trig.Cos;
+import brizgy.tpolab2.trig.Cot;
+import brizgy.tpolab2.trig.Sin;
+import brizgy.tpolab2.trig.Tan;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
