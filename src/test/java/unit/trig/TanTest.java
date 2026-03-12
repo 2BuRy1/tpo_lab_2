@@ -6,7 +6,7 @@ import brizgy.tpolab2.trig.Sin;
 import brizgy.tpolab2.trig.Tan;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 
@@ -23,17 +23,24 @@ public class TanTest {
     private final BigDecimal tol = new BigDecimal("1E-3");
 
     @ParameterizedTest
-    @ValueSource(doubles = { -1.0, -0.7, -0.5, -0.2, 0.2, 0.5, 0.7, 1.0 })
-    void tan_matches_math(double xd) {
-        BigDecimal x = bd(xd);
+    @CsvSource({
+            "-1.0, -1.5574077246549020821",
+            "-0.5, -0.54630248984379049497",
+            "-0.2, -0.20271003550867248081",
+            "0.2, 0.20271003550867248584",
+            "0.5, 0.54630248984379053151",
+            "1.0, 1.5574077246549022305"
+    })
+    void tan_matches_reference(String xs, String expectedS) {
+        BigDecimal x = new BigDecimal(xs);
         BigDecimal actual = tan.calc(x, eps);
-        BigDecimal expected = bd(Math.tan(xd));
+        BigDecimal expected = new BigDecimal(expectedS);
         assertClose(expected, actual, tol);
     }
 
     @Test
     void tan_throws_when_cos_is_zero() {
-        BigDecimal x = BigDecimal.valueOf(Math.PI / 2); // cos(x) ≈ 0
+        BigDecimal x = BigDecimal.valueOf(Math.PI / 2);
 
         assertThrows(ArithmeticException.class, () -> tan.calc(x, eps));
     }

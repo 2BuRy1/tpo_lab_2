@@ -4,7 +4,7 @@ import brizgy.tpolab2.log.Ln;
 import brizgy.tpolab2.func.MathFunction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 
@@ -18,11 +18,19 @@ public class LnTest {
     private final BigDecimal tol = new BigDecimal("1E-3");
 
     @ParameterizedTest
-    @ValueSource(doubles = { 0.1, 0.2, 0.5, 1.0, 2.0, 3.0, 10.0 })
-    void ln_matches_math(double xd) {
-        BigDecimal x = bd(xd);
+    @CsvSource({
+            "0.1, -2.3025850929940456836",
+            "0.2, -1.6094379124341003746",
+            "0.5, -0.69314718055994530940",
+            "1.0, 0",
+            "2.0, 0.69314718055994530940",
+            "3.0, 1.0986122886681096914",
+            "10.0, 2.3025850929940456836"
+    })
+    void ln_matches_reference(String xs, String expectedS) {
+        BigDecimal x = new BigDecimal(xs);
         BigDecimal actual = ln.calc(x, eps);
-        BigDecimal expected = bd(Math.log(xd));
+        BigDecimal expected = new BigDecimal(expectedS);
         assertClose(expected, actual, tol);
     }
 

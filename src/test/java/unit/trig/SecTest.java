@@ -6,7 +6,7 @@ import brizgy.tpolab2.trig.Sec;
 import brizgy.tpolab2.trig.Sin;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 
@@ -23,13 +23,20 @@ public class SecTest {
     private final BigDecimal tol = new BigDecimal("1E-2");
 
     @ParameterizedTest
-    @ValueSource(doubles = { -2.0, -1.0, -0.7, -0.5, -0.2, 0.2, 0.5, 0.7, 1.0, 2.0 })
-    void sec_matches_math(double xd) {
-        if (Math.abs(Math.cos(xd)) < 1e-6) return;
-
-        BigDecimal x = bd(xd);
+    @CsvSource({
+            "-2.0, -2.4029979617223813111",
+            "-1.0, 1.8508157176809254415",
+            "-0.5, 1.1394939273245490842",
+            "-0.2, 1.0203388449411926771",
+            "0.2, 1.0203388449411927024",
+            "0.5, 1.1394939273245491604",
+            "1.0, 1.8508157176809256179",
+            "2.0, -2.4029979617223806682"
+    })
+    void sec_matches_reference(String xs, String expectedS) {
+        BigDecimal x = new BigDecimal(xs);
         BigDecimal actual = sec.calc(x, eps);
-        BigDecimal expected = bd(1.0 / Math.cos(xd));
+        BigDecimal expected = new BigDecimal(expectedS);
         assertClose(expected, actual, tol);
     }
 

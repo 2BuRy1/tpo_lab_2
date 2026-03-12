@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FuncSystemNegativeTest {
@@ -39,7 +39,7 @@ public class FuncSystemNegativeTest {
         BigDecimal value = assertDoesNotThrow(
                 () -> system.calc(BigDecimal.ONE, new BigDecimal("1E-6"))
         );
-        assertEquals(BigDecimal.ZERO, value);
+        assertTrue(value.compareTo(BigDecimal.ZERO) == 0, "Expected numeric zero, got " + value);
     }
 
     @Test

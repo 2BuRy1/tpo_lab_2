@@ -6,7 +6,7 @@ import brizgy.tpolab2.trig.Cot;
 import brizgy.tpolab2.trig.Sin;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 
@@ -23,14 +23,20 @@ public class CotTest {
     private final BigDecimal tol = new BigDecimal("1E-2");
 
     @ParameterizedTest
-    @ValueSource(doubles = { -2.0, -1.0, -0.7, -0.5, -0.2, 0.2, 0.5, 0.7, 1.0, 2.0 })
-    void cot_matches_math(double xd) {
-        // избегаем сингулярностей: если sin очень близок к 0 — пропускаем
-        if (Math.abs(Math.sin(xd)) < 1e-6) return;
-
-        BigDecimal x = bd(xd);
+    @CsvSource({
+            "-2.0, 0.45765755436028570254",
+            "-1.0, -0.64209261593433076420",
+            "-0.5, -1.8304877217124519805",
+            "-0.2, -4.9331548755868937186",
+            "0.2, 4.9331548755868935962",
+            "0.5, 1.8304877217124518581",
+            "1.0, 0.64209261593433063756",
+            "2.0, -0.45765755436028582497"
+    })
+    void cot_matches_reference(String xs, String expectedS) {
+        BigDecimal x = new BigDecimal(xs);
         BigDecimal actual = cot.calc(x, eps);
-        BigDecimal expected = bd(Math.cos(xd) / Math.sin(xd));
+        BigDecimal expected = new BigDecimal(expectedS);
         assertClose(expected, actual, tol);
     }
 

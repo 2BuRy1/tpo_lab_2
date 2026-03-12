@@ -13,8 +13,23 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.util.Map;
 
 public class FuncSystemWithStubsTest {
+
+    private static final Map<String, BigDecimal> SYSTEM_EXPECTED = Map.ofEntries(
+            Map.entry("-0.1", new BigDecimal("-69709761.114534263957")),
+            Map.entry("-0.2", new BigDecimal("-187139.91403462926117")),
+            Map.entry("-0.5", new BigDecimal("-336.90508631229114607")),
+            Map.entry("-1.0", new BigDecimal("-120.83563643400441482")),
+            Map.entry("-2.0", new BigDecimal("81.963032723991092770")),
+            Map.entry("0.1", new BigDecimal("123.65627125175415034")),
+            Map.entry("0.2", new BigDecimal("20.630456624518918905")),
+            Map.entry("0.5", new BigDecimal("0.30567858077465062056")),
+            Map.entry("2.0", new BigDecimal("-0.30567858077465062056")),
+            Map.entry("3.0", new BigDecimal("-3.0574542409161089957")),
+            Map.entry("10.0", new BigDecimal("-123.65627125175415034"))
+    );
 
     @Test
     void system_matches_expected_using_stubs() throws Exception {
@@ -30,9 +45,7 @@ public class FuncSystemWithStubsTest {
 
         var system = new FuncSystem(sin, cos, tan, cot, ln, log2, log3, log10);
 
-        var expected = new CsvTableStub(Path.of("src/test/resources/system_expected.csv"));
-
-        BigDecimal eps = new BigDecimal("1E-20"); // не влияет при стабе
+        BigDecimal eps = new BigDecimal("1E-20");
 
         for (String xs : new String[]{
                 "-0.1","-0.2","-0.5","-1.0","-2.0",
@@ -41,7 +54,7 @@ public class FuncSystemWithStubsTest {
             BigDecimal x = new BigDecimal(xs);
 
             BigDecimal actual = system.calc(x, eps);
-            BigDecimal exp = expected.calc(x, eps);
+            BigDecimal exp = expectedValue(xs);
 
             assertClose(exp, actual, new BigDecimal("1E-9"));
         }
@@ -51,26 +64,23 @@ public class FuncSystemWithStubsTest {
     void system_real_trig_stub_logs() throws Exception {
         BigDecimal eps = new BigDecimal("1E-20");
 
-        // REAL trig
         MathFunction sin = new Sin();
         MathFunction cos = new Cos(sin);
         MathFunction tan = new Tan(sin, cos);
         MathFunction cot = new Cot(sin, cos);
 
-        // STUB logs (их не должно быть в этой ветке)
         MathFunction ln = new CsvTableStub(Path.of("src/test/resources/ln.csv"));
         MathFunction log2 = new CsvTableStub(Path.of("src/test/resources/log2.csv"));
         MathFunction log3 = new CsvTableStub(Path.of("src/test/resources/log3.csv"));
         MathFunction log10 = new CsvTableStub(Path.of("src/test/resources/log10.csv"));
 
         MathFunction system = new FuncSystem(sin, cos, tan, cot, ln, log2, log3, log10);
-        var expected = new CsvTableStub(Path.of("src/test/resources/system_expected.csv"));
 
         for (String xs : new String[]{"-0.1","-0.2","-0.5","-1.0","-2.0"}) {
             BigDecimal x = new BigDecimal(xs);
 
             BigDecimal actual = system.calc(x, eps);
-            BigDecimal exp = expected.calc(x, eps);
+            BigDecimal exp = expectedValue(xs);
             assertClose(exp, actual, new BigDecimal("1E-9"));
         }
     }
@@ -92,13 +102,12 @@ public class FuncSystemWithStubsTest {
         MathFunction log10 = new Log(ln, new BigDecimal("10"));
 
         MathFunction system = new FuncSystem(sin, cos, tan, cot, ln, log2, log3, log10);
-        var expected = new CsvTableStub(Path.of("src/test/resources/system_expected.csv"));
 
         for (String xs : new String[]{"0.1","0.2","0.5","2.0","3.0","10.0"}) {
             BigDecimal x = new BigDecimal(xs);
 
             BigDecimal actual = system.calc(x, eps);
-            BigDecimal exp = expected.calc(x, eps);
+            BigDecimal exp = expectedValue(xs);
             assertClose(exp, actual, new BigDecimal("1E-9"));
         }
     }
@@ -120,7 +129,6 @@ public class FuncSystemWithStubsTest {
         MathFunction log10 = new Log(ln, new BigDecimal("10"));
 
         MathFunction system = new FuncSystem(sin, cos, tan, cot, ln, log2, log3, log10);
-        var expected = new CsvTableStub(Path.of("src/test/resources/system_expected.csv"));
 
         for (String xs : new String[]{
                 "-0.1","-0.2","-0.5","-1.0","-2.0",
@@ -129,10 +137,18 @@ public class FuncSystemWithStubsTest {
             BigDecimal x = new BigDecimal(xs);
 
             BigDecimal actual = system.calc(x, eps);
-            BigDecimal exp = expected.calc(x, eps);
+            BigDecimal exp = expectedValue(xs);
 
             assertClose(exp, actual, new BigDecimal("1E-9"));
         }
+    }
+
+    private static BigDecimal expectedValue(String x) {
+        BigDecimal value = SYSTEM_EXPECTED.get(x);
+        if (value == null) {
+            throw new IllegalArgumentException("No reference value for x=" + x);
+        }
+        return value;
     }
 
 

@@ -49,7 +49,6 @@ public class CsvExporter {
                         w.write(",ERROR");
                         w.newLine();
                     }
-                    // SKIP_ROW
                 }
             }
         }
