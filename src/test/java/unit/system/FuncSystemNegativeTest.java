@@ -63,4 +63,26 @@ public class FuncSystemNegativeTest {
         assertThrows(ArithmeticException.class,
                 () -> system.calc(BigDecimal.ZERO, new BigDecimal("1E-6")));
     }
+
+    @Test
+    void system_throws_when_x_equals_minus_pi() {
+
+        MathFunction sin = new Sin();
+        MathFunction cos = new Cos(sin);
+        MathFunction tan = new Tan(sin, cos);
+        MathFunction cot = new Cot(sin, cos);
+
+        MathFunction ln = new Ln();
+        MathFunction log2 = new Log(ln, new BigDecimal("2"));
+        MathFunction log3 = new Log(ln, new BigDecimal("3"));
+        MathFunction log10 = new Log(ln, new BigDecimal("10"));
+
+        MathFunction system = new FuncSystem(
+                sin, cos, tan, cot, ln,
+                log2, log3, log10
+        );
+
+        assertThrows(ArithmeticException.class,
+                () -> system.calc(new BigDecimal("-3.141592653589793"), new BigDecimal("1E-6")));
+    }
 }

@@ -38,6 +38,21 @@ public class TanTest {
         assertClose(expected, actual, tol);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "0, 0",
+            "0.5235987755982989, 0.57735026918962576451",
+            "0.7853981633974483, 1",
+            "1.0471975511965977, 1.7320508075688772935",
+            "3.141592653589793, 0"
+    })
+    void tan_matches_reference_key_points(String xs, String expectedS) {
+        BigDecimal x = new BigDecimal(xs);
+        BigDecimal actual = tan.calc(x, eps);
+        BigDecimal expected = new BigDecimal(expectedS);
+        assertClose(expected, actual, tol);
+    }
+
     @Test
     void tan_throws_when_cos_is_zero() {
         BigDecimal x = BigDecimal.valueOf(Math.PI / 2);

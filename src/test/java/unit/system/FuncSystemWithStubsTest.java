@@ -89,13 +89,11 @@ public class FuncSystemWithStubsTest {
     void system_real_logs_stub_trig() throws Exception {
         BigDecimal eps = new BigDecimal("1E-20");
 
-        // STUB trig (не должны использоваться при x>0)
         MathFunction sin = new CsvTableStub(Path.of("src/test/resources/sin.csv"));
         MathFunction cos = new CsvTableStub(Path.of("src/test/resources/cos.csv"));
         MathFunction tan = new CsvTableStub(Path.of("src/test/resources/tan.csv"));
         MathFunction cot = new CsvTableStub(Path.of("src/test/resources/cot.csv"));
 
-        // REAL logs
         MathFunction ln = new Ln();
         MathFunction log2 = new Log(ln, new BigDecimal("2"));
         MathFunction log3 = new Log(ln, new BigDecimal("3"));
@@ -113,16 +111,14 @@ public class FuncSystemWithStubsTest {
     }
 
     @Test
-    void system_real() throws Exception {
+    void system_real() {
         BigDecimal eps = new BigDecimal("1E-20");
 
-        // REAL trig
         MathFunction sin = new Sin();
         MathFunction cos = new Cos(sin);
         MathFunction tan = new Tan(sin, cos);
         MathFunction cot = new Cot(sin, cos);
 
-        // REAL logs
         MathFunction ln = new Ln();
         MathFunction log2 = new Log(ln, new BigDecimal("2"));
         MathFunction log3 = new Log(ln, new BigDecimal("3"));

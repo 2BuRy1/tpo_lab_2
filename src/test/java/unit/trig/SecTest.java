@@ -15,6 +15,8 @@ import static util.BdAsserts.*;
 
 public class SecTest {
 
+    private static final BigDecimal TWO_PI = new BigDecimal("6.2831853071795864769");
+
     private final MathFunction sin = new Sin();
     private final MathFunction cos = new Cos(sin);
     private final MathFunction sec = new Sec(cos);
@@ -41,9 +43,28 @@ public class SecTest {
     }
 
     @Test
-    void sec_throws_when_cos_is_zero() {
-        BigDecimal x = BigDecimal.valueOf(Math.PI / 2); // cos(x) ≈ 0
+    void sec_matches_reference_key_points() {
+        assertClose(new BigDecimal("1"), sec.calc(new BigDecimal("0"), eps), tol);
+        assertClose(new BigDecimal("1.1547005383792515290"), sec.calc(new BigDecimal("0.5235987755982989"), eps), tol);
+        assertClose(new BigDecimal("1.4142135623730950488"), sec.calc(new BigDecimal("0.7853981633974483"), eps), tol);
+        assertClose(new BigDecimal("2"), sec.calc(new BigDecimal("1.0471975511965977"), eps), tol);
+        assertClose(new BigDecimal("-1"), sec.calc(new BigDecimal("3.141592653589793"), eps), tol);
+    }
 
-        assertThrows(ArithmeticException.class, () -> sec.calc(x, eps));
+    @Test
+    void sec_is_periodic_with_2pi() {
+        BigDecimal x = new BigDecimal("0.37");
+        BigDecimal base = sec.calc(x, eps);
+        BigDecimal shifted = sec.calc(x.add(TWO_PI), eps);
+        assertClose(base, shifted, new BigDecimal("1E-2"));
+    }
+
+    @Test
+    void sec_throws_when_cos_is_zero() {
+        BigDecimal x1 = BigDecimal.valueOf(Math.PI / 2);
+        BigDecimal x2 = BigDecimal.valueOf(-Math.PI / 2);
+
+        assertThrows(ArithmeticException.class, () -> sec.calc(x1, eps));
+        assertThrows(ArithmeticException.class, () -> sec.calc(x2, eps));
     }
 }

@@ -40,6 +40,20 @@ public class CotTest {
         assertClose(expected, actual, tol);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "0.5235987755982989, 1.7320508075688772935",
+            "0.7853981633974483, 1",
+            "1.0471975511965977, 0.57735026918962576451",
+            "1.5707963267948966, 0"
+    })
+    void cot_matches_reference_key_points(String xs, String expectedS) {
+        BigDecimal x = new BigDecimal(xs);
+        BigDecimal actual = cot.calc(x, eps);
+        BigDecimal expected = new BigDecimal(expectedS);
+        assertClose(expected, actual, tol);
+    }
+
     @Test
     void cot_throws_when_sin_is_zero() {
         assertThrows(ArithmeticException.class, () -> cot.calc(BigDecimal.ZERO, eps));
