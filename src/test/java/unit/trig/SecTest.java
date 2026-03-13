@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static util.BdAsserts.*;
 
 public class SecTest {
@@ -95,5 +98,19 @@ public class SecTest {
 
         assertTrue(q2.compareTo(BigDecimal.ZERO) < 0);
         assertTrue(q3.compareTo(BigDecimal.ZERO) < 0);
+    }
+
+    @Test
+    void sec_uses_cos_dependency_with_mock() {
+        MathFunction cosMock = mock(MathFunction.class);
+        MathFunction sec = new Sec(cosMock);
+
+        BigDecimal x = new BigDecimal("0.25");
+        when(cosMock.calc(x, eps)).thenReturn(new BigDecimal("0.5"));
+
+        BigDecimal actual = sec.calc(x, eps);
+
+        assertClose(new BigDecimal("2"), actual, new BigDecimal("1E-12"));
+        verify(cosMock).calc(x, eps);
     }
 }

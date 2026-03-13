@@ -10,6 +10,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static util.BdAsserts.*;
 
 public class LogTest {
@@ -77,5 +80,23 @@ public class LogTest {
 
         assertThrows(ArithmeticException.class, () -> log10.calc(BigDecimal.ZERO, eps));
         assertThrows(ArithmeticException.class, () -> log10.calc(new BigDecimal("-1"), eps));
+    }
+
+    @Test
+    void log_uses_ln_dependency_with_mock() {
+        MathFunction lnMock = mock(MathFunction.class);
+        MathFunction log2 = new Log(lnMock, new BigDecimal("2"));
+
+        BigDecimal x = new BigDecimal("8");
+        BigDecimal base = new BigDecimal("2");
+
+        when(lnMock.calc(x, eps)).thenReturn(new BigDecimal("6"));
+        when(lnMock.calc(base, eps)).thenReturn(new BigDecimal("2"));
+
+        BigDecimal actual = log2.calc(x, eps);
+
+        assertClose(new BigDecimal("3"), actual, new BigDecimal("1E-12"));
+        verify(lnMock).calc(x, eps);
+        verify(lnMock).calc(base, eps);
     }
 }

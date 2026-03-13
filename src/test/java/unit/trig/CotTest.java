@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static util.BdAsserts.*;
 
 public class CotTest {
@@ -86,5 +89,22 @@ public class CotTest {
 
         assertTrue(left.compareTo(BigDecimal.ZERO) < 0);
         assertTrue(right.compareTo(BigDecimal.ZERO) > 0);
+    }
+
+    @Test
+    void cot_uses_sin_and_cos_dependencies_with_mocks() {
+        MathFunction sinMock = mock(MathFunction.class);
+        MathFunction cosMock = mock(MathFunction.class);
+        MathFunction cot = new Cot(sinMock, cosMock);
+
+        BigDecimal x = new BigDecimal("0.25");
+        when(sinMock.calc(x, eps)).thenReturn(new BigDecimal("2"));
+        when(cosMock.calc(x, eps)).thenReturn(new BigDecimal("4"));
+
+        BigDecimal actual = cot.calc(x, eps);
+
+        assertClose(new BigDecimal("2"), actual, new BigDecimal("1E-12"));
+        verify(sinMock).calc(x, eps);
+        verify(cosMock).calc(x, eps);
     }
 }

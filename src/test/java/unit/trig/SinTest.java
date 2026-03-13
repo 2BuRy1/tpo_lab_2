@@ -2,6 +2,8 @@ package unit.trig;
 
 import brizgy.tpolab2.trig.Sin;
 import brizgy.tpolab2.func.MathFunction;
+import brizgy.tpolab2.util.CsvGenerator;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,6 +19,11 @@ public class SinTest {
     private final MathFunction sin = new Sin();
     private final BigDecimal eps = new BigDecimal("1E-6");
     private final BigDecimal tol = new BigDecimal("1E-4");
+
+    @BeforeAll
+    static void refreshStubTablesFromRealFunctions() throws Exception {
+        CsvGenerator.generateDefaultTestResources();
+    }
 
     @ParameterizedTest
     @CsvSource({

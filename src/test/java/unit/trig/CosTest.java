@@ -3,12 +3,17 @@ package unit.trig;
 import brizgy.tpolab2.trig.Cos;
 import brizgy.tpolab2.trig.Sin;
 import brizgy.tpolab2.func.MathFunction;
+import brizgy.tpolab2.util.MathConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static util.BdAsserts.*;
 
 public class CosTest {
@@ -60,5 +65,22 @@ public class CosTest {
         BigDecimal base = cos.calc(x, eps);
         BigDecimal shifted = cos.calc(x.add(TWO_PI), eps);
         assertClose(base, shifted, new BigDecimal("1E-4"));
+    }
+
+    @Test
+    void cos_uses_sin_dependency_with_mock() {
+        MathFunction sinMock = mock(MathFunction.class);
+        MathFunction cos = new Cos(sinMock);
+
+        BigDecimal x = new BigDecimal("1.23");
+        BigDecimal arg = new BigDecimal(Math.PI / 2, MathConfig.MC).subtract(x);
+        BigDecimal value = new BigDecimal("0.123456");
+
+        when(sinMock.calc(arg, eps)).thenReturn(value);
+
+        BigDecimal actual = cos.calc(x, eps);
+
+        assertEquals(value, actual);
+        verify(sinMock).calc(arg, eps);
     }
 }

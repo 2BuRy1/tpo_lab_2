@@ -14,9 +14,35 @@ import java.util.List;
 
 public class CsvGenerator {
 
-    public static void main(String[] args) throws Exception {
+    private static final List<BigDecimal> DEFAULT_XS = List.of(
+            new BigDecimal("-0.1"),
+            new BigDecimal("-0.2"),
+            new BigDecimal("-0.5"),
+            new BigDecimal("-1.0"),
+            new BigDecimal("-2.0"),
+            new BigDecimal("0.1"),
+            new BigDecimal("0.2"),
+            new BigDecimal("0.5"),
+            new BigDecimal("2.0"),
+            new BigDecimal("3.0"),
+            new BigDecimal("10.0")
+    );
 
-        BigDecimal eps = new BigDecimal("1E-20");
+    public static void main(String[] args) throws Exception {
+        generateDefaultTestResources();
+    }
+
+    public static void generateDefaultTestResources() throws Exception {
+        generateForPoints(DEFAULT_XS, new BigDecimal("1E-20"), Path.of("src/test/resources"));
+    }
+
+    public static void generateForPoints(
+            List<BigDecimal> xs,
+            BigDecimal eps,
+            Path outputDir
+    ) throws Exception {
+
+        Files.createDirectories(outputDir);
 
         MathFunction sin = new Sin();
         MathFunction cos = new Cos(sin);
@@ -34,42 +60,26 @@ public class CsvGenerator {
                 log2, log3, log10
         );
 
-        List<BigDecimal> xs = List.of(
-                new BigDecimal("-0.1"),
-                new BigDecimal("-0.2"),
-                new BigDecimal("-0.5"),
-                new BigDecimal("-1.0"),
-                new BigDecimal("-2.0"),
-                new BigDecimal("0.1"),
-                new BigDecimal("0.2"),
-                new BigDecimal("0.5"),
-                new BigDecimal("2.0"),
-                new BigDecimal("3.0"),
-                new BigDecimal("10.0")
-        );
+        writeCsv(xs, sin, eps, outputDir.resolve("sin.csv"));
+        writeCsv(xs, cos, eps, outputDir.resolve("cos.csv"));
+        writeCsv(xs, tan, eps, outputDir.resolve("tan.csv"));
+        writeCsv(xs, cot, eps, outputDir.resolve("cot.csv"));
+        writeCsv(xs, sec, eps, outputDir.resolve("sec.csv"));
 
-        writeCsv(xs, sin, eps, "sin.csv");
-        writeCsv(xs, cos, eps, "cos.csv");
-        writeCsv(xs, tan, eps, "tan.csv");
-        writeCsv(xs, cot, eps, "cot.csv");
-        writeCsv(xs, sec, eps, "sec.csv");
+        writeCsv(xs, ln, eps, outputDir.resolve("ln.csv"));
+        writeCsv(xs, log2, eps, outputDir.resolve("log2.csv"));
+        writeCsv(xs, log3, eps, outputDir.resolve("log3.csv"));
+        writeCsv(xs, log10, eps, outputDir.resolve("log10.csv"));
 
-        writeCsv(xs, ln, eps, "ln.csv");
-        writeCsv(xs, log2, eps, "log2.csv");
-        writeCsv(xs, log3, eps, "log3.csv");
-        writeCsv(xs, log10, eps, "log10.csv");
-
-        writeCsv(xs, system, eps, "system_expected.csv");
+        writeCsv(xs, system, eps, outputDir.resolve("system_expected.csv"));
     }
 
     private static void writeCsv(
             List<BigDecimal> xs,
             MathFunction fn,
             BigDecimal eps,
-            String name
+            Path path
     ) throws Exception {
-
-        Path path = Path.of("src/test/resources/" + name);
 
         try (BufferedWriter w = Files.newBufferedWriter(path)) {
 

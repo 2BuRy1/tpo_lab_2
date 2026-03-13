@@ -9,6 +9,8 @@ import brizgy.tpolab2.trig.Cos;
 import brizgy.tpolab2.trig.Cot;
 import brizgy.tpolab2.trig.Sin;
 import brizgy.tpolab2.trig.Tan;
+import brizgy.tpolab2.util.CsvGenerator;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -43,6 +45,11 @@ class FuncSystemTopDownIntegrationTest {
             Map.entry("3.0", new BigDecimal("-3.0574542409161089957")),
             Map.entry("10.0", new BigDecimal("-123.65627125175415034"))
     );
+
+    @BeforeAll
+    static void refreshStubTablesFromRealFunctions() throws Exception {
+        CsvGenerator.generateDefaultTestResources();
+    }
 
     @Test
     void trig_stage_0_all_stubs() throws Exception {
