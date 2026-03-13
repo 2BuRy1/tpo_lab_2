@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static util.BdAsserts.*;
 
 public class CotTest {
@@ -57,5 +58,33 @@ public class CotTest {
     @Test
     void cot_throws_when_sin_is_zero() {
         assertThrows(ArithmeticException.class, () -> cot.calc(BigDecimal.ZERO, eps));
+    }
+
+    @Test
+    void cot_throws_when_x_equals_pi() {
+        assertThrows(ArithmeticException.class, () -> cot.calc(new BigDecimal("3.141592653589793"), eps));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2.0",
+            "2.8",
+            "3.4",
+            "4.0"
+    })
+    void cot_matches_reference_in_second_and_third_quadrants(String xs) {
+        BigDecimal x = new BigDecimal(xs);
+        BigDecimal actual = cot.calc(x, eps);
+        BigDecimal expected = BigDecimal.valueOf(1.0d / Math.tan(x.doubleValue()));
+        assertClose(expected, actual, new BigDecimal("1E-2"));
+    }
+
+    @Test
+    void cot_changes_sign_around_pi() {
+        BigDecimal left = cot.calc(new BigDecimal("3.131592653589793"), eps);
+        BigDecimal right = cot.calc(new BigDecimal("3.151592653589793"), eps);
+
+        assertTrue(left.compareTo(BigDecimal.ZERO) < 0);
+        assertTrue(right.compareTo(BigDecimal.ZERO) > 0);
     }
 }

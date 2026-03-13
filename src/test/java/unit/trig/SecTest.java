@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static util.BdAsserts.*;
 
 public class SecTest {
@@ -66,5 +67,33 @@ public class SecTest {
 
         assertThrows(ArithmeticException.class, () -> sec.calc(x1, eps));
         assertThrows(ArithmeticException.class, () -> sec.calc(x2, eps));
+    }
+
+    @Test
+    void sec_throws_when_x_equals_three_pi_over_two() {
+        assertThrows(ArithmeticException.class, () -> sec.calc(new BigDecimal("4.71238898038469"), eps));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "2.0",
+            "2.8",
+            "3.4",
+            "4.0"
+    })
+    void sec_matches_reference_in_second_and_third_quadrants(String xs) {
+        BigDecimal x = new BigDecimal(xs);
+        BigDecimal actual = sec.calc(x, eps);
+        BigDecimal expected = BigDecimal.valueOf(1.0d / Math.cos(x.doubleValue()));
+        assertClose(expected, actual, new BigDecimal("1E-2"));
+    }
+
+    @Test
+    void sec_is_negative_in_second_and_third_quadrants() {
+        BigDecimal q2 = sec.calc(new BigDecimal("2.3"), eps);
+        BigDecimal q3 = sec.calc(new BigDecimal("4.0"), eps);
+
+        assertTrue(q2.compareTo(BigDecimal.ZERO) < 0);
+        assertTrue(q3.compareTo(BigDecimal.ZERO) < 0);
     }
 }

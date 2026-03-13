@@ -1,0 +1,1 @@
+f(x)={x<=0:(((((1/sin(x))^2+cos(x))^2)/(cos(x)/sin(x)))/(2*(cos(x)/sin(x))^2))/((cos(x)*(sin(x)*((1/sin(x))+tan(x))))/(cos(x)/sin(x))))^4*(cos(x)/sin(x)),x>0:((ln(x)/ln(10))-(ln(x)/ln(2)))*(ln(x)/ln(2))*ln(x)*(ln(x)/ln(2))*(ln(x)/ln(3))}
